@@ -12,6 +12,16 @@ export interface TableRow {
   isExpanded?: boolean;
 }
 
+export interface TableRowData {
+  id: string;
+  name: string;
+  age: number;
+  city: string;
+  isActive: boolean;
+  gender: string;
+  isExpanded: boolean;
+}
+
 export interface TableData {
   columns: TableColumn[];
   data: TableRow[];

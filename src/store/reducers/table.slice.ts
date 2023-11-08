@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import tableData from '../../data/moc';
+import { TableRow } from '../../types/Table';
 
 const initialState = {
   ...tableData,
@@ -22,24 +23,24 @@ export const tableSlice = createSlice({
     },
     updateTableData: (state, action) => {
       const { rowId, columnId, newValue } = action.payload;
-      const rowData = state.data.find((row) => row.id === rowId);
+      const rowData = state.data.find((row) => row.id === rowId) as TableRow;
+
       if (rowData) {
-        rowData[columnId] = newValue;
+        rowData[columnId as keyof TableRow] = newValue;
         localStorage.setItem('tableData', JSON.stringify(state.data));
       }
     },
     filterTableData: (state, action: PayloadAction<string>) => {
       const wordToFilter = action.payload;
-
       if (wordToFilter.trim() === '') {
         return state;
       }
-
       return {
         ...state,
         data: state.data.filter((row) => {
           for (const column of state.columns) {
-            const cellValue = row[column.id].toString().toLowerCase();
+            const columnId = column.id as keyof typeof row;
+            const cellValue = row[columnId].toString().toLowerCase();
             if (cellValue.includes(wordToFilter.toLowerCase())) {
               return true;
             }
@@ -53,8 +54,8 @@ export const tableSlice = createSlice({
 
       if (sortOrder === 'asc') {
         state.data.sort((a, b) => {
-          const aValue = a[columnId];
-          const bValue = b[columnId];
+          const aValue = a[columnId as keyof typeof a];
+          const bValue = b[columnId as keyof typeof b];
           if (aValue < bValue) {
             return -1;
           }
@@ -65,8 +66,8 @@ export const tableSlice = createSlice({
         });
       } else if (sortOrder === 'desc') {
         state.data.sort((a, b) => {
-          const aValue = a[columnId];
-          const bValue = b[columnId];
+          const aValue = a[columnId as keyof typeof a];
+          const bValue = b[columnId as keyof typeof b];
           if (aValue > bValue) {
             return -1;
           }

@@ -83,7 +83,9 @@ const Table = () => {
   const handleSaveText = (
     rowId: string,
     columnId: string,
-    e: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.KeyboardEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >,
   ) => {
     if (e.key === 'Enter') {
       dispatch(updateTableData({ rowId, columnId, newValue: editingValue }));
